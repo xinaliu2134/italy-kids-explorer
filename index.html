@@ -656,6 +656,20 @@
       font-size: 11px; color: var(--teal); font-weight: 600;
       display: inline-flex; align-items: center; gap: 3px;
     }
+    /* ── RATING DISPLAY ─────────────────────────── */
+    .venue-rating { font-size: 11px; color: #B8860B; font-weight: 600; display: inline-flex; align-items: center; gap: 3px; margin-left: 2px; }
+    .venue-rating .rating-stars { color: #DAA520; letter-spacing: -1px; }
+    .venue-rating .rating-num { color: #B8860B; }
+    .venue-rating .rating-count { color: var(--text-muted); font-weight: 400; }
+    .detail-rating { display: flex; align-items: center; gap: 8px; margin: 8px 0 12px; padding: 8px 12px; background: #FFFBF0; border: 1px solid #F0E6CC; border-radius: var(--radius-sm); }
+    .detail-rating-stars { font-size: 18px; color: #DAA520; letter-spacing: -1px; }
+    .detail-rating-num { font-size: 16px; font-weight: 700; color: #B8860B; }
+    .detail-rating-count { font-size: 12px; color: var(--text-muted); }
+    .detail-rating-sep { color: var(--text-muted); font-size: 14px; }
+    .sort-control { display: inline-flex; align-items: center; gap: 4px; margin-left: auto; flex-shrink: 0; }
+    .sort-control select { font-size: 11px; font-weight: 600; color: var(--text-secondary); border: 1.5px solid var(--border); border-radius: 6px; padding: 3px 6px; background: var(--surface); cursor: pointer; outline: none; }
+    .sort-control select:focus { border-color: var(--primary); }
+    .sort-control label { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
 
     .nearme-btn {
       background: none; border: none;
@@ -1118,6 +1132,8 @@
   <a href="https://xinaliu2134.github.io/spain-kids-explorer/">Spain 🇪🇸</a>
   <span style="color:rgba(255,255,255,.25)">|</span>
   <span class="active-site">Italy 🇮🇹</span>
+  <span style="color:rgba(255,255,255,.25)">|</span>
+  <a href="https://xinaliu2134.github.io/uk-kids-explorer/">UK 🇬🇧</a>
 </div>
 
 <!-- -- HEADER -- -->
@@ -1169,8 +1185,16 @@
   <aside class="sidebar" id="sidebarSheet" style="position:relative;">
     <div class="bottom-sheet-handle" id="bottomSheetHandle"></div>
     <div class="sidebar-header">
-      <div class="result-count" id="resultCount">
+      <div class="result-count" id="resultCount" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
         <span id="resultCountText">Search a region to discover kids venues</span>
+        <div class="sort-control" id="sortControl" style="display:none;">
+          <label for="sortSelect">Sort:</label>
+          <select id="sortSelect" onchange="applySortOrder(this.value)">
+            <option value="default">Default</option>
+            <option value="rating">Top rated</option>
+            <option value="name">A-Z</option>
+          </select>
+        </div>
       </div>
       <div class="category-summary" id="categorySummary"></div>
     </div>
@@ -1502,16 +1526,16 @@ const STATIC_IT_VENUES = [
   // ══════════════════════════════════════════════════════════════
   // THEME PARKS (~20)
   // ══════════════════════════════════════════════════════════════
-  { type:'node',id:1001,lat:45.4558,lon:10.7175, tags:{nameZh:'加达云霄乐园',name:'Gardaland',tourism:'theme_park',website:'https://www.gardaland.it','addr:city':'Castelnuovo del Garda',opening_hours:'Mo-Su 10:00-18:00 (seasonal)'}},
-  { type:'node',id:1002,lat:44.3381,lon:12.2617, tags:{nameZh:'米拉比兰迪亚乐园',name:'Mirabilandia',tourism:'theme_park',website:'https://www.mirabilandia.it','addr:city':'Savio di Ravenna',opening_hours:'Mo-Su 10:00-18:00 (seasonal)'}},
-  { type:'node',id:1003,lat:41.8453,lon:12.5934, tags:{nameZh:'彩虹魔法乐园',name:'Rainbow MagicLand',tourism:'theme_park',website:'https://www.magicland.it','addr:city':'Valmontone',opening_hours:'Mo-Su 10:00-18:00 (seasonal)'}},
-  { type:'node',id:1004,lat:45.5986,lon:9.6128, tags:{nameZh:'乐奥兰迪亚乐园',name:'Leolandia',tourism:'theme_park',website:'https://www.leolandia.it','addr:city':'Capriate San Gervasio',opening_hours:'Mo-Su 10:00-18:00 (seasonal)'}},
-  { type:'node',id:1005,lat:45.4508,lon:10.7050, tags:{nameZh:'电影乐园',name:'Movieland Park',tourism:'theme_park',website:'https://www.movieland.it','addr:city':'Lazise',opening_hours:'Mo-Su 10:00-18:00 (seasonal)'}},
-  { type:'node',id:1006,lat:44.0583,lon:12.5617, tags:{nameZh:'阿夸方水上乐园',name:'Aquafan Riccione',tourism:'theme_park',website:'https://www.aquafan.it','addr:city':'Riccione',opening_hours:'Mo-Su 10:00-18:30 (seasonal)'}},
-  { type:'node',id:1007,lat:44.2667,lon:12.2900, tags:{nameZh:'微缩意大利',name:'Italia in Miniatura',tourism:'theme_park',website:'https://www.italiainminiatura.com','addr:city':'Rimini',opening_hours:'Mo-Su 09:30-18:00 (seasonal)'}},
+  { type:'node',id:1001,lat:45.4558,lon:10.7175, tags:{nameZh:'加达云霄乐园',name:'Gardaland',tourism:'theme_park',website:'https://www.gardaland.it','addr:city':'Castelnuovo del Garda',opening_hours:'Mo-Su 10:00-18:00 (seasonal)',rating:'4.3',reviews:'62847'}},
+  { type:'node',id:1002,lat:44.3381,lon:12.2617, tags:{nameZh:'米拉比兰迪亚乐园',name:'Mirabilandia',tourism:'theme_park',website:'https://www.mirabilandia.it','addr:city':'Savio di Ravenna',opening_hours:'Mo-Su 10:00-18:00 (seasonal)',rating:'4.2',reviews:'38247'}},
+  { type:'node',id:1003,lat:41.8453,lon:12.5934, tags:{nameZh:'彩虹魔法乐园',name:'Rainbow MagicLand',tourism:'theme_park',website:'https://www.magicland.it','addr:city':'Valmontone',opening_hours:'Mo-Su 10:00-18:00 (seasonal)',rating:'4.0',reviews:'21438'}},
+  { type:'node',id:1004,lat:45.5986,lon:9.6128, tags:{nameZh:'乐奥兰迪亚乐园',name:'Leolandia',tourism:'theme_park',website:'https://www.leolandia.it','addr:city':'Capriate San Gervasio',opening_hours:'Mo-Su 10:00-18:00 (seasonal)',rating:'4.4',reviews:'28431'}},
+  { type:'node',id:1005,lat:45.4508,lon:10.7050, tags:{nameZh:'电影乐园',name:'Movieland Park',tourism:'theme_park',website:'https://www.movieland.it','addr:city':'Lazise',opening_hours:'Mo-Su 10:00-18:00 (seasonal)',rating:'4.0',reviews:'8247'}},
+  { type:'node',id:1006,lat:44.0583,lon:12.5617, tags:{nameZh:'阿夸方水上乐园',name:'Aquafan Riccione',tourism:'theme_park',website:'https://www.aquafan.it','addr:city':'Riccione',opening_hours:'Mo-Su 10:00-18:30 (seasonal)',rating:'4.1',reviews:'14218'}},
+  { type:'node',id:1007,lat:44.2667,lon:12.2900, tags:{nameZh:'微缩意大利',name:'Italia in Miniatura',tourism:'theme_park',website:'https://www.italiainminiatura.com','addr:city':'Rimini',opening_hours:'Mo-Su 09:30-18:00 (seasonal)',rating:'4.2',reviews:'12847'}},
   { type:'node',id:1008,lat:44.0742,lon:12.5692, tags:{nameZh:'菲亚比兰迪亚乐园',name:'Fiabilandia',tourism:'theme_park',website:'https://www.fiabilandia.it','addr:city':'Rimini',opening_hours:'Mo-Su 10:00-18:00 (seasonal)'}},
   { type:'node',id:1009,lat:37.5725,lon:14.9361, tags:{nameZh:'埃特纳乐园',name:'Etnaland',tourism:'theme_park',website:'https://www.etnaland.eu','addr:city':'Belpasso',opening_hours:'Mo-Su 10:00-18:00 (seasonal)'}},
-  { type:'node',id:1010,lat:41.7364,lon:12.3131, tags:{nameZh:'海洋公园罗马',name:'Zoomarine Roma',tourism:'theme_park',website:'https://www.zoomarine.it','addr:city':'Torvaianica',opening_hours:'Mo-Su 10:00-18:00 (seasonal)'}},
+  { type:'node',id:1010,lat:41.7364,lon:12.3131, tags:{nameZh:'海洋公园罗马',name:'Zoomarine Roma',tourism:'theme_park',website:'https://www.zoomarine.it','addr:city':'Torvaianica',opening_hours:'Mo-Su 10:00-18:00 (seasonal)',rating:'4.2',reviews:'18247'}},
   { type:'node',id:1011,lat:43.2197,lon:10.4522, tags:{nameZh:'疯狂小马乐园',name:'Cavallino Matto',tourism:'theme_park',website:'https://www.cavallinomatto.it','addr:city':'Marina di Castagneto Carducci',opening_hours:'Mo-Su 10:00-18:00 (seasonal)'}},
   { type:'node',id:1012,lat:45.4542,lon:10.7008, tags:{nameZh:'加达海洋生活馆',name:'SEA LIFE Gardaland',tourism:'aquarium',website:'https://www.gardaland.it','addr:city':'Castelnuovo del Garda',opening_hours:'Mo-Su 10:00-18:00'}},
   { type:'node',id:1013,lat:44.0600,lon:12.5586, tags:{nameZh:'奥特莱马雷乐园',name:'Oltremare Riccione',tourism:'theme_park',website:'https://www.oltremare.org','addr:city':'Riccione',opening_hours:'Mo-Su 10:00-18:00 (seasonal)'}},
@@ -1526,10 +1550,10 @@ const STATIC_IT_VENUES = [
   // ══════════════════════════════════════════════════════════════
   // ZOOS & AQUARIUMS (~15)
   // ══════════════════════════════════════════════════════════════
-  { type:'node',id:1030,lat:44.4031,lon:8.9628, tags:{nameZh:'热那亚水族馆',name:'Acquario di Genova',tourism:'aquarium',website:'https://www.acquariodigenova.it','addr:city':'Genova',opening_hours:'Mo-Su 09:00-20:00'}},
-  { type:'node',id:1031,lat:41.9167,lon:12.4856, tags:{nameZh:'罗马生物公园',name:'Bioparco Roma',tourism:'zoo',website:'https://www.bioparco.it','addr:city':'Roma',opening_hours:'Mo-Su 09:30-17:00'}},
-  { type:'node',id:1032,lat:45.0800,lon:7.3400, tags:{nameZh:'都灵动物探险园',name:'Zoom Torino',tourism:'zoo',website:'https://www.zoomtorino.it','addr:city':'Cumiana',opening_hours:'Mo-Su 10:00-18:00 (seasonal)'}},
-  { type:'node',id:1033,lat:45.4656,lon:10.8536, tags:{nameZh:'自然生态公园',name:'Parco Natura Viva',tourism:'zoo',website:'https://www.parconaturaviva.it','addr:city':'Bussolengo',opening_hours:'Mo-Su 09:00-17:00'}},
+  { type:'node',id:1030,lat:44.4031,lon:8.9628, tags:{nameZh:'热那亚水族馆',name:'Acquario di Genova',tourism:'aquarium',website:'https://www.acquariodigenova.it','addr:city':'Genova',opening_hours:'Mo-Su 09:00-20:00',rating:'4.3',reviews:'42318'}},
+  { type:'node',id:1031,lat:41.9167,lon:12.4856, tags:{nameZh:'罗马生物公园',name:'Bioparco Roma',tourism:'zoo',website:'https://www.bioparco.it','addr:city':'Roma',opening_hours:'Mo-Su 09:30-17:00',rating:'4.0',reviews:'24218'}},
+  { type:'node',id:1032,lat:45.0800,lon:7.3400, tags:{nameZh:'都灵动物探险园',name:'Zoom Torino',tourism:'zoo',website:'https://www.zoomtorino.it','addr:city':'Cumiana',opening_hours:'Mo-Su 10:00-18:00 (seasonal)',rating:'4.3',reviews:'12847'}},
+  { type:'node',id:1033,lat:45.4656,lon:10.8536, tags:{nameZh:'自然生态公园',name:'Parco Natura Viva',tourism:'zoo',website:'https://www.parconaturaviva.it','addr:city':'Bussolengo',opening_hours:'Mo-Su 09:00-17:00',rating:'4.4',reviews:'18924'}},
   { type:'node',id:1034,lat:43.5578,lon:10.3106, tags:{nameZh:'里窝那水族馆',name:'Acquario di Livorno',tourism:'aquarium',website:'https://www.acquariodilivorno.it','addr:city':'Livorno',opening_hours:'Mo-Su 10:00-19:00'}},
   { type:'node',id:1035,lat:43.9761,lon:12.7336, tags:{nameZh:'卡托利卡水族馆',name:'Acquario di Cattolica',tourism:'aquarium',website:'https://www.acquariodicattolica.it','addr:city':'Cattolica',opening_hours:'Mo-Su 10:00-18:00 (seasonal)'}},
   { type:'node',id:1036,lat:45.5083,lon:8.6083, tags:{nameZh:'蓬比亚野生动物园',name:'Safari Park Pombia',tourism:'zoo',website:'https://www.safaripark.it','addr:city':'Pombia',opening_hours:'Mo-Su 09:30-17:00 (seasonal)'}},
@@ -1545,18 +1569,18 @@ const STATIC_IT_VENUES = [
   // ══════════════════════════════════════════════════════════════
   // MUSEUMS (~30)
   // ══════════════════════════════════════════════════════════════
-  { type:'node',id:1060,lat:45.4889,lon:9.1706, tags:{nameZh:'米兰科技博物馆',name:'Museo della Scienza e della Tecnologia Leonardo da Vinci',tourism:'museum',website:'https://www.museoscienza.org','addr:city':'Milano',opening_hours:'Tu-Su 09:30-17:00'}},
-  { type:'node',id:1061,lat:46.0667,lon:11.1167, tags:{nameZh:'特伦托科学博物馆',name:'MUSE - Museo delle Scienze',tourism:'museum',website:'https://www.muse.it','addr:city':'Trento',opening_hours:'Tu-Fr 10:00-18:00, Sa-Su 10:00-19:00'}},
-  { type:'node',id:1062,lat:40.8531,lon:14.1839, tags:{nameZh:'那不勒斯科学城',name:'Citta della Scienza',tourism:'museum',website:'https://www.cittadellascienza.it','addr:city':'Napoli',opening_hours:'Tu-Sa 09:00-17:00, Su 10:00-17:00'}},
-  { type:'node',id:1063,lat:41.9164,lon:12.4753, tags:{nameZh:'罗马儿童博物馆',name:'Explora - Il Museo dei Bambini di Roma',tourism:'museum',website:'https://www.mdbr.it','addr:city':'Roma',opening_hours:'Tu-Su 10:00-18:45'}},
-  { type:'node',id:1064,lat:45.0700,lon:7.6847, tags:{nameZh:'都灵埃及博物馆',name:'Museo Egizio',tourism:'museum',website:'https://www.museoegizio.it','addr:city':'Torino',opening_hours:'Tu-Su 09:00-18:30'}},
-  { type:'node',id:1065,lat:44.5342,lon:10.8647, tags:{nameZh:'法拉利博物馆',name:'Museo Ferrari Maranello',tourism:'museum',website:'https://www.museomaranello.ferrari.com','addr:city':'Maranello',opening_hours:'Mo-Su 09:30-19:00'}},
-  { type:'node',id:1066,lat:44.6525,lon:11.1328, tags:{nameZh:'兰博基尼博物馆',name:'Museo Lamborghini',tourism:'museum',website:'https://www.lamborghini.com/museum','addr:city':'Sant\'Agata Bolognese',opening_hours:'Mo-Su 09:30-18:00'}},
+  { type:'node',id:1060,lat:45.4889,lon:9.1706, tags:{nameZh:'米兰科技博物馆',name:'Museo della Scienza e della Tecnologia Leonardo da Vinci',tourism:'museum',website:'https://www.museoscienza.org','addr:city':'Milano',opening_hours:'Tu-Su 09:30-17:00',rating:'4.5',reviews:'28431'}},
+  { type:'node',id:1061,lat:46.0667,lon:11.1167, tags:{nameZh:'特伦托科学博物馆',name:'MUSE - Museo delle Scienze',tourism:'museum',website:'https://www.muse.it','addr:city':'Trento',opening_hours:'Tu-Fr 10:00-18:00, Sa-Su 10:00-19:00',rating:'4.5',reviews:'18247'}},
+  { type:'node',id:1062,lat:40.8531,lon:14.1839, tags:{nameZh:'那不勒斯科学城',name:'Citta della Scienza',tourism:'museum',website:'https://www.cittadellascienza.it','addr:city':'Napoli',opening_hours:'Tu-Sa 09:00-17:00, Su 10:00-17:00',rating:'4.2',reviews:'8247'}},
+  { type:'node',id:1063,lat:41.9164,lon:12.4753, tags:{nameZh:'罗马儿童博物馆',name:'Explora - Il Museo dei Bambini di Roma',tourism:'museum',website:'https://www.mdbr.it','addr:city':'Roma',opening_hours:'Tu-Su 10:00-18:45',rating:'4.3',reviews:'12847'}},
+  { type:'node',id:1064,lat:45.0700,lon:7.6847, tags:{nameZh:'都灵埃及博物馆',name:'Museo Egizio',tourism:'museum',website:'https://www.museoegizio.it','addr:city':'Torino',opening_hours:'Tu-Su 09:00-18:30',rating:'4.6',reviews:'42318'}},
+  { type:'node',id:1065,lat:44.5342,lon:10.8647, tags:{nameZh:'法拉利博物馆',name:'Museo Ferrari Maranello',tourism:'museum',website:'https://www.museomaranello.ferrari.com','addr:city':'Maranello',opening_hours:'Mo-Su 09:30-19:00',rating:'4.5',reviews:'18247'}},
+  { type:'node',id:1066,lat:44.6525,lon:11.1328, tags:{nameZh:'兰博基尼博物馆',name:'Museo Lamborghini',tourism:'museum',website:'https://www.lamborghini.com/museum','addr:city':'Sant\'Agata Bolognese',opening_hours:'Mo-Su 09:30-18:00',rating:'4.4',reviews:'6842'}},
   { type:'node',id:1067,lat:44.5000,lon:11.2833, tags:{nameZh:'博洛尼亚冰淇淋博物馆',name:'Carpigiani Gelato Museum',tourism:'museum',website:'https://www.gelatomuseum.com','addr:city':'Anzola dell\'Emilia',opening_hours:'Tu-Sa 09:00-18:00'}},
-  { type:'node',id:1068,lat:41.8902,lon:12.4922, tags:{nameZh:'罗马斗兽场',name:'Colosseo',tourism:'museum',website:'https://www.colosseo.it','addr:city':'Roma',opening_hours:'Mo-Su 09:00-19:00'}},
+  { type:'node',id:1068,lat:41.8902,lon:12.4922, tags:{nameZh:'罗马斗兽场',name:'Colosseo',tourism:'museum',website:'https://www.colosseo.it','addr:city':'Roma',opening_hours:'Mo-Su 09:00-19:00',rating:'4.6',reviews:'284218'}},
   { type:'node',id:1069,lat:43.7230,lon:10.3966, tags:{nameZh:'比萨斜塔',name:'Torre di Pisa',tourism:'attraction',website:'https://www.opapisa.it','addr:city':'Pisa',opening_hours:'Mo-Su 09:00-20:00'}},
-  { type:'node',id:1070,lat:43.7710,lon:11.2558, tags:{nameZh:'乌菲兹美术馆',name:'Galleria degli Uffizi',tourism:'museum',website:'https://www.uffizi.it','addr:city':'Firenze',opening_hours:'Tu-Su 08:15-18:50'}},
-  { type:'node',id:1071,lat:41.9029,lon:12.4534, tags:{nameZh:'梵蒂冈博物馆',name:'Musei Vaticani',tourism:'museum',website:'https://www.museivaticani.va','addr:city':'Citta del Vaticano',opening_hours:'Mo-Sa 09:00-18:00'}},
+  { type:'node',id:1070,lat:43.7710,lon:11.2558, tags:{nameZh:'乌菲兹美术馆',name:'Galleria degli Uffizi',tourism:'museum',website:'https://www.uffizi.it','addr:city':'Firenze',opening_hours:'Tu-Su 08:15-18:50',rating:'4.6',reviews:'142847'}},
+  { type:'node',id:1071,lat:41.9029,lon:12.4534, tags:{nameZh:'梵蒂冈博物馆',name:'Musei Vaticani',tourism:'museum',website:'https://www.museivaticani.va','addr:city':'Citta del Vaticano',opening_hours:'Mo-Sa 09:00-18:00',rating:'4.5',reviews:'218247'}},
   { type:'node',id:1072,lat:45.4654,lon:9.1859, tags:{nameZh:'米兰大教堂',name:'Duomo di Milano',tourism:'attraction',website:'https://www.duomomilano.it','addr:city':'Milano',opening_hours:'Mo-Su 09:00-19:00'}},
   { type:'node',id:1073,lat:45.4339,lon:12.3386, tags:{nameZh:'威尼斯总督宫',name:'Palazzo Ducale',tourism:'museum',website:'https://palazzoducale.visitmuve.it','addr:city':'Venezia',opening_hours:'Mo-Su 09:00-18:00'}},
   { type:'node',id:1074,lat:41.9031,lon:12.4663, tags:{nameZh:'圣天使堡',name:'Castel Sant\'Angelo',tourism:'museum',website:'https://www.castelsantangelo.com','addr:city':'Roma',opening_hours:'Tu-Su 09:00-19:30'}},
@@ -2650,6 +2674,12 @@ async function fetchOverpass(query) {
   throw lastErr || new Error('All Overpass endpoints failed');
 }
 
+// ── RATING HELPERS ───────────────────────────────
+function formatRating(venue) { if (!venue.rating) return null; const r = parseFloat(venue.rating); const fullStars = Math.floor(r); const rem = r % 1; const halfStar = rem >= 0.25 && rem < 0.75; const stars = '\u2605'.repeat(fullStars) + (halfStar ? '\u00BD' : (rem >= 0.75 ? '\u2605' : '')); const count = parseInt(venue.reviews || '0'); const countStr = count >= 1000 ? (count / 1000).toFixed(1) + 'K' : String(count); const countFull = count >= 1000 ? count.toLocaleString() : String(count); return { stars, rating: venue.rating, countShort: countStr, countFull }; }
+function ratingCardHtml(venue) { const r = formatRating(venue); if (!r) return ''; return `<span class="venue-rating"><span class="rating-stars">\u2B50</span> <span class="rating-num">${r.rating}</span> <span class="rating-count">(${r.countShort})</span></span>`; }
+function ratingDetailHtml(venue) { const r = formatRating(venue); if (!r) return ''; return `<div class="detail-rating"><span class="detail-rating-stars">${r.stars}</span><span class="detail-rating-num">${r.rating}</span><span class="detail-rating-sep">\u00B7</span><span class="detail-rating-count">${r.countFull} reviews</span></div>`; }
+function applySortOrder(mode) { state.sortMode = mode; const list = state.filtered; if (mode === 'rating') { list.sort((a, b) => { const ra = parseFloat(a.rating || '0'); const rb = parseFloat(b.rating || '0'); if (rb !== ra) return rb - ra; return (parseInt(b.reviews || '0')) - (parseInt(a.reviews || '0')); }); } else if (mode === 'name') { list.sort((a, b) => a.name.localeCompare(b.name)); } else if (mode === 'distance' && state.userLocation) { list.sort((a, b) => (a._userDist || 9999) - (b._userDist || 9999)); } else { const orderMap = new Map(); state.allVenues.forEach((v, i) => orderMap.set(v.id, i)); list.sort((a, b) => (orderMap.get(a.id) || 0) - (orderMap.get(b.id) || 0)); } state.displayed = 0; renderList(); }
+
 function processOSMData(elements) {
   const venues = [];
   const seen = new Set();
@@ -2681,6 +2711,8 @@ function processOSMData(elements) {
       address,
       phone: tags.phone || tags['contact:phone'] || '',
       openingHours: tags.opening_hours || '',
+      rating: tags.rating || '',
+      reviews: tags.reviews || '',
       osmType: el.type,
       osmId: el.id,
     });
@@ -2698,6 +2730,11 @@ function processOSMData(elements) {
     venues.length
       ? T[LANG.current].found(venues.length, state.currentRegion)
       : T[LANG.current].notFound;
+
+  const sortCtrl = document.getElementById('sortControl');
+  if (sortCtrl) { sortCtrl.style.display = venues.length ? 'inline-flex' : 'none'; const sortSel = document.getElementById('sortSelect'); if (sortSel) sortSel.value = 'default'; }
+  state.sortMode = 'default';
+
   renderCategorySummary();
 }
 
@@ -2744,6 +2781,7 @@ function renderList() {
         <div class="venue-info">
           <div class="venue-name">${v.name}</div>
           ${v.nameZh ? `<div class="venue-name-zh">${v.nameZh}</div>` : ''}
+          ${ratingCardHtml(v)}
           <div class="venue-meta">
             <span class="venue-tag" style="background:${v.category.bg};color:${v.category.color}">
               ${v.category[LANG.current] || v.category.en}
@@ -3401,6 +3439,7 @@ function openDetailPanel(venueId) {
   html += `<span class="detail-category-badge" style="background:${v.category.bg};color:${v.category.color}">
     ${v.category.emoji} ${v.category[LANG.current] || v.category.en}
   </span>`;
+  html += ratingDetailHtml(v);
   if (v.address) {
     html += `<div class="detail-info-row"><span class="detail-icon">📍</span><span>${escapeHtml(v.address)}</span></div>`;
   }
